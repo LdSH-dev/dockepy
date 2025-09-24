@@ -153,8 +153,8 @@ class TestDockerManager:
         """Test listing containers functionality."""
         # Create a test container
         container = self.docker_manager.create_test_container(
-            image="busybox:latest", 
-            command="sleep 10", 
+            image="busybox:latest",
+            command="sleep 10",
             name="test-container-list",
             remove=False,  # Keep container for testing
         )

@@ -120,7 +120,9 @@ class DockerManager:
                 "image": image,
                 "command": command,
                 "detach": True,
-                "remove": kwargs.get("remove", True),  # Use kwargs value or True by default
+                "remove": kwargs.get(
+                    "remove", True
+                ),  # Use kwargs value or True by default
                 "stdout": True,
                 "stderr": True,
             }
