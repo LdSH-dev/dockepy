@@ -33,15 +33,14 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
         restore-keys: |
           ${{ runner.os }}-pip-
     
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest pytest-cov
+        pip install -e ".[dev]"
     
     - name: Start Docker daemon
       run: |
@@ -53,6 +52,15 @@ jobs:
       run: |
         docker --version
         docker info
+    
+    - name: Run linting
+      run: |
+        echo "Running Black..."
+        black --check --diff .
+        echo "Running Flake8..."
+        flake8 docker_cicd_manager tests/
+        echo "Running MyPy..."
+        mypy docker_cicd_manager/
     
     - name: Run tests
       run: |
