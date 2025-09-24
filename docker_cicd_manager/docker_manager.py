@@ -5,13 +5,13 @@ Docker Manager for container and image operations.
 import docker
 import logging
 import os
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, cast
 from .exceptions import ContainerError, ImageError, DockerManagerError
 
 logger = logging.getLogger(__name__)
 
 
-def _detect_docker_socket():
+def _detect_docker_socket() -> Optional[str]:
     """
     Detect the best Docker socket to use.
 
@@ -96,7 +96,7 @@ class DockerManager:
         image: str,
         command: str = "echo 'Test container created successfully'",
         name: Optional[str] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> docker.models.containers.Container:
         """
         Create a test container with the specified image.
@@ -139,7 +139,7 @@ class DockerManager:
             container = self.client.containers.run(**container_config)
 
             logger.info(f"Test container created successfully: {container.id}")
-            return container
+            return cast(docker.models.containers.Container, container)
 
         except docker.errors.ImageNotFound:
             raise ImageError(f"Docker image '{image}' not found")
@@ -164,7 +164,7 @@ class DockerManager:
         try:
             container = self.client.containers.get(container_id)
             logs = container.logs().decode("utf-8")
-            return logs
+            return cast(str, logs)
         except docker.errors.NotFound:
             raise ContainerError(f"Container '{container_id}' not found")
         except Exception as e:
@@ -207,7 +207,7 @@ class DockerManager:
         """
         try:
             containers = self.client.containers.list(all=all_containers)
-            return containers
+            return cast(List[docker.models.containers.Container], containers)
         except Exception as e:
             raise ContainerError(f"Failed to list containers: {e}")
 
@@ -315,11 +315,11 @@ class DockerManager:
         """
         try:
             info = self.client.info()
-            return info
+            return cast(Dict[str, Any], info)
         except Exception as e:
             raise DockerManagerError(f"Failed to get Docker info: {e}")
 
-    def close(self):
+    def close(self) -> None:
         """Close the Docker client connection."""
         if hasattr(self, "client"):
             self.client.close()
