@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def main():
+def main() -> None:
     """Main function demonstrating basic usage."""
 
     # Initialize Docker Manager
@@ -45,7 +45,9 @@ def main():
         logger.info("Creating a Python test container...")
         python_container = docker_manager.create_test_container(
             image="python:3.11-slim",
-            command="python -c 'import sys; print(f\"Python {sys.version} is working!\")'",
+            command=(
+                "python -c 'import sys; print(f\"Python {sys.version} is working!\")'"
+            ),
             name="python-test",
         )
 

@@ -1,0 +1,45 @@
+repos:
+  # Black code formatting
+  - repo: https://github.com/psf/black
+    rev: 25.9.0
+    hooks:
+      - id: black
+        language_version: python3
+        args: [--check, --diff]
+
+  # Flake8 linting
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8]
+        files: ^(docker_cicd_manager/|tests/)
+
+  # MyPy type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.18.2
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-docker]
+        args: [--ignore-missing-imports]
+        files: ^docker_cicd_manager/
+
+  # Local hooks for exact CI simulation
+  - repo: local
+    hooks:
+      # Install dependencies (simulate CI)
+      - id: install-deps
+        name: Install dependencies
+        entry: bash -c 'pip install -e ".[dev]"'
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      # Run tests (simulate CI)
+      - id: run-tests
+        name: Run tests
+        entry: bash -c 'pytest tests/ -v --cov=docker_cicd_manager --cov-report=xml --cov-report=html'
+        language: system
+        pass_filenames: false
+        always_run: true
+        files: ^(tests/|docker_cicd_manager/)

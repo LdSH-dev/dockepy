@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def test_multiple_containers():
+def test_multiple_containers() -> None:
     """Test creating and managing multiple containers."""
 
     docker_manager = DockerManager()
@@ -52,7 +52,7 @@ def test_multiple_containers():
         # Check logs for each container
         for i, container in enumerate(containers):
             logs = docker_manager.get_container_logs(container.id)
-            logger.info(f"Container {i+1} logs: {logs.strip()}")
+            logger.info(f"Container {i + 1} logs: {logs.strip()}")
 
         # Cleanup
         cleaned_count = docker_manager.cleanup_test_containers()
@@ -65,7 +65,7 @@ def test_multiple_containers():
         docker_manager.close()
 
 
-def test_container_lifecycle():
+def test_container_lifecycle() -> None:
     """Test complete container lifecycle management."""
 
     docker_manager = DockerManager()
@@ -105,7 +105,7 @@ def test_container_lifecycle():
         docker_manager.close()
 
 
-def test_error_handling():
+def test_error_handling() -> None:
     """Test error handling scenarios."""
 
     docker_manager = DockerManager()
@@ -141,7 +141,7 @@ def test_error_handling():
         docker_manager.close()
 
 
-def main():
+def main() -> None:
     """Run all advanced usage examples."""
 
     logger.info("=== Advanced Docker CI/CD Manager Usage Examples ===")

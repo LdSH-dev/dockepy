@@ -20,7 +20,7 @@ class TestDockerManager:
     """Test class for DockerManager."""
 
     @pytest.fixture(autouse=True)
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Setup method that runs before each test."""
         self.docker_manager = DockerManager()
         yield
@@ -32,7 +32,7 @@ class TestDockerManager:
         finally:
             self.docker_manager.close()
 
-    def test_docker_connection(self):
+    def test_docker_connection(self) -> None:
         """Test that Docker daemon connection works."""
         info = self.docker_manager.get_docker_info()
         assert info is not None
@@ -40,7 +40,7 @@ class TestDockerManager:
         assert "Images" in info
         logger.info("Docker connection test passed")
 
-    def test_create_simple_test_container(self):
+    def test_create_simple_test_container(self) -> None:
         """Test creating a simple test container with Ubuntu."""
         # Create a test container
         container = self.docker_manager.create_test_container(
@@ -67,7 +67,7 @@ class TestDockerManager:
         self.docker_manager.stop_container(container.id)
         logger.info("Simple test container test passed")
 
-    def test_create_python_test_container(self):
+    def test_create_python_test_container(self) -> None:
         """Test creating a Python test container."""
         # Create a Python test container
         container = self.docker_manager.create_test_container(
@@ -94,7 +94,7 @@ class TestDockerManager:
         self.docker_manager.stop_container(container.id)
         logger.info("Python test container test passed")
 
-    def test_create_multiple_test_containers(self):
+    def test_create_multiple_test_containers(self) -> None:
         """Test creating multiple test containers."""
         containers = []
 
@@ -126,7 +126,7 @@ class TestDockerManager:
 
         logger.info("Multiple test containers test passed")
 
-    def test_container_error_handling(self):
+    def test_container_error_handling(self) -> None:
         """Test error handling for invalid container operations."""
         # Test getting logs from non-existent container
         with pytest.raises(ContainerError):
@@ -138,7 +138,7 @@ class TestDockerManager:
 
         logger.info("Container error handling test passed")
 
-    def test_image_error_handling(self):
+    def test_image_error_handling(self) -> None:
         """Test error handling for invalid image operations."""
         # Test creating container with non-existent image
         with pytest.raises(ImageError):
@@ -149,7 +149,7 @@ class TestDockerManager:
 
         logger.info("Image error handling test passed")
 
-    def test_list_containers(self):
+    def test_list_containers(self) -> None:
         """Test listing containers functionality."""
         # Create a test container
         container = self.docker_manager.create_test_container(
@@ -174,7 +174,7 @@ class TestDockerManager:
 
         logger.info("List containers test passed")
 
-    def test_cleanup_test_containers(self):
+    def test_cleanup_test_containers(self) -> None:
         """Test cleanup functionality for test containers."""
         # Create several test containers
         containers = []
@@ -199,7 +199,7 @@ class TestDockerManager:
         logger.info("Cleanup test containers test passed")
 
 
-def test_docker_manager_initialization():
+def test_docker_manager_initialization() -> None:
     """Test DockerManager initialization."""
     # Test with default connection
     manager = DockerManager()
