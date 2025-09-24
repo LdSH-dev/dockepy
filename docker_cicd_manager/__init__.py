@@ -14,6 +14,6 @@ __email__ = "leonardohemming@gmail.com"
 __all__ = [
     "DockerManager",
     "DockerManagerError",
-    "ContainerError", 
+    "ContainerError",
     "ImageError",
 ]
