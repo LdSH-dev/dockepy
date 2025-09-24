@@ -5,7 +5,6 @@ Docker Manager for container and image operations.
 import docker
 import logging
 import os
-import pathlib
 from typing import Optional, Dict, Any, List
 from .exceptions import ContainerError, ImageError, DockerManagerError
 
@@ -35,7 +34,7 @@ def _detect_docker_socket():
         if os.path.exists(socket_path):
             try:
                 # Test if socket is accessible
-                stat_info = os.stat(socket_path)
+                os.stat(socket_path)
                 logger.info(f"Found Docker socket: {socket_path}")
                 return f"unix://{socket_path}"
             except (OSError, PermissionError):
@@ -84,8 +83,10 @@ class DockerManager:
                     f"Permission denied to access Docker. Try:\n"
                     f"1. Make sure Docker Desktop is running\n"
                     f"2. Run with sudo: sudo python script.py\n"
-                    f"3. Or add user to docker group: sudo usermod -aG docker $USER\n"
-                    f"Current socket: {os.environ.get('DOCKER_HOST', 'default')}"
+                    f"3. Or add user to docker group: "
+                    f"sudo usermod -aG docker $USER\n"
+                    f"Current socket: "
+                    f"{os.environ.get('DOCKER_HOST', 'default')}"
                 )
             else:
                 raise DockerManagerError(f"Failed to connect to Docker daemon: {e}")
@@ -271,7 +272,8 @@ class DockerManager:
 
     def cleanup_test_containers(self) -> int:
         """
-        Clean up all test containers (containers with 'test' in name or created by this manager).
+        Clean up all test containers (containers with 'test' in name or
+        created by this manager).
 
         Returns:
             Number of containers cleaned up

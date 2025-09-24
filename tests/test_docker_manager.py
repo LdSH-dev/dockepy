@@ -9,7 +9,6 @@ from docker_cicd_manager import DockerManager
 from docker_cicd_manager.exceptions import (
     ContainerError,
     ImageError,
-    DockerManagerError,
 )
 
 # Configure logging for tests
@@ -103,12 +102,12 @@ class TestDockerManager:
         for i in range(3):
             container = self.docker_manager.create_test_container(
                 image="alpine:latest",
-                command=f"echo 'Test container {i+1} is working!'",
-                name=f"test-container-{i+1}",
+                command=f"echo 'Test container {i + 1} is working!'",
+                name=f"test-container-{i + 1}",
                 remove=False,  # Keep container for log retrieval
             )
             containers.append(container)
-            logger.info(f"Created test container {i+1}: {container.id}")
+            logger.info(f"Created test container {i + 1}: {container.id}")
 
         # Wait for all containers to complete
         time.sleep(3)
@@ -119,8 +118,8 @@ class TestDockerManager:
         # Check logs for each container
         for i, container in enumerate(containers):
             logs = self.docker_manager.get_container_logs(container.id)
-            assert f"Test container {i+1} is working!" in logs
-            logger.info(f"Container {i+1} logs: {logs}")
+            assert f"Test container {i + 1} is working!" in logs
+            logger.info(f"Container {i + 1} logs: {logs}")
 
             # Stop each container
             self.docker_manager.stop_container(container.id)
@@ -144,7 +143,8 @@ class TestDockerManager:
         # Test creating container with non-existent image
         with pytest.raises(ImageError):
             self.docker_manager.create_test_container(
-                image="non-existent-image:latest", command="echo 'This should fail'"
+                image="non-existent-image:latest",
+                command="echo 'This should fail'",
             )
 
         logger.info("Image error handling test passed")
@@ -192,7 +192,8 @@ class TestDockerManager:
 
         # Cleanup test containers
         cleaned_count = self.docker_manager.cleanup_test_containers()
-        assert cleaned_count >= 2  # Should clean up at least our test containers
+        # Should clean up at least our test containers
+        assert cleaned_count >= 2
 
         logger.info(f"Cleaned up {cleaned_count} test containers")
         logger.info("Cleanup test containers test passed")

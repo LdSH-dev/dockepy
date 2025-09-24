@@ -1,7 +1,8 @@
 """
 Docker CI/CD Manager
 
-A Python library for Docker container management and GitHub Actions CI/CD integration.
+A Python library for Docker container management and GitHub Actions CI/CD
+integration.
 """
 
 from .docker_manager import DockerManager
