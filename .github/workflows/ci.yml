@@ -60,7 +60,7 @@ jobs:
         echo "Running Flake8..."
         flake8 docker_cicd_manager tests/
         echo "Running MyPy..."
-        mypy docker_cicd_manager/
+        mypy --install-types --non-interactive docker_cicd_manager/
     
     - name: Run tests
       run: |
